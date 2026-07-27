@@ -1,0 +1,17 @@
+{
+  "owner": "JackvanHecke",
+  "distRepo": "app-distribution",
+  "pathToken": "2e4312f7cb9b",
+  "source": {
+    "name": "JAVAC Apps",
+    "identifier": "com.jackvanhecke.apps",
+    "subtitle": "Privé sideload-bron van JAVAC"
+  },
+  "apps": [
+    { "repo": "Snusscounter", "name": "Snusscounter", "bundleIdentifier": "com.snusscounter.app", "developerName": "JAVAC", "icon": "Snusscounter.png", "iconSource": "../Snusscounter/assets/icon.png" },
+    { "repo": "agora",        "name": "Agora",        "bundleIdentifier": "com.jackvanhecke.agora",  "developerName": "JAVAC", "icon": "agora.png",        "iconSource": "../friend_news/assets/images/icon.png" },
+    { "repo": "lumina",       "name": "Lumina",       "bundleIdentifier": "com.jackvanhecke.lumina", "developerName": "JAVAC", "icon": "lumina.png",       "iconSource": "../product reminder/assets/icon.png" },
+    { "repo": "vigor",        "name": "Vigor",        "bundleIdentifier": "com.jackvanhecke.vigor",  "developerName": "JAVAC", "icon": "vigor.png",        "iconSource": "../vigor/assets/icon.png" },
+    { "repo": "dispatch",     "name": "Dispatch",     "bundleIdentifier": "com.jackvanhecke.dispatch","developerName": "JAVAC", "icon": "dispatch.png",     "iconSource": "../foto-reminder/dispatch/assets/icon.png" }
+  ]
+}
