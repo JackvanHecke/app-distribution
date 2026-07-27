@@ -1,0 +1,62 @@
+{
+  "name": "JAVAC Apps",
+  "identifier": "com.jackvanhecke.apps",
+  "subtitle": "Privé sideload-bron van JAVAC",
+  "apps": [
+    {
+      "name": "Snusscounter",
+      "bundleIdentifier": "com.snusscounter.app",
+      "developerName": "JAVAC",
+      "version": "1.0.0.1",
+      "versionDate": "2026-07-27",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/Snusscounter.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/Snusscounter.png",
+      "size": 11267597,
+      "localizedDescription": "Sideload-build van Snusscounter"
+    },
+    {
+      "name": "Agora",
+      "bundleIdentifier": "com.jackvanhecke.agora",
+      "developerName": "JAVAC",
+      "version": "1.0.0.2",
+      "versionDate": "2026-07-27",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/agora.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/agora.png",
+      "size": 13822377,
+      "localizedDescription": "Sideload-build van Agora"
+    },
+    {
+      "name": "Lumina",
+      "bundleIdentifier": "com.jackvanhecke.lumina",
+      "developerName": "JAVAC",
+      "version": "1.0.0.1",
+      "versionDate": "2026-07-27",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/lumina.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/lumina.png",
+      "size": 10397305,
+      "localizedDescription": "Sideload-build van Lumina"
+    },
+    {
+      "name": "Vigor",
+      "bundleIdentifier": "com.jackvanhecke.vigor",
+      "developerName": "JAVAC",
+      "version": "1.0.0.1",
+      "versionDate": "2026-07-27",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/vigor.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/vigor.png",
+      "size": 10265263,
+      "localizedDescription": "Sideload-build van Vigor"
+    },
+    {
+      "name": "Dispatch",
+      "bundleIdentifier": "com.jackvanhecke.dispatch",
+      "developerName": "JAVAC",
+      "version": "1.0.0.3",
+      "versionDate": "2026-07-27",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/dispatch.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/dispatch.png",
+      "size": 7236720,
+      "localizedDescription": "Sideload-build van Dispatch"
+    }
+  ]
+}

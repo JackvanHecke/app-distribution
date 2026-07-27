@@ -60,10 +60,14 @@ PY
 )
   size=$(stat -f%z "$ipa" 2>/dev/null || stat -c%s "$ipa")
 
-  # Upload naar dist 'latest' met stabiele naam <repo>.ipa.
+  # Upload naar dist 'latest' met stabiele naam <repo>.ipa. In een eigen submap,
+  # anders botst bv. agora.ipa met Agora.ipa op een hoofdletter-ongevoelig
+  # bestandssysteem (macOS) en weigert cp.
   outname="${repo}.ipa"
-  cp "$ipa" "$WORK/$outname"
-  gh release upload "$REL" -R "$OWNER/$DIST" "$WORK/$outname" --clobber
+  updir="$WORK/up_$repo"
+  mkdir -p "$updir"
+  cp "$ipa" "$updir/$outname"
+  gh release upload "$REL" -R "$OWNER/$DIST" "$updir/$outname" --clobber
 
   entry=$(jq -n \
     --arg name "$name" --arg bid "$bid" --arg dev "$dev" --arg ver "$ver" \
