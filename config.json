@@ -12,6 +12,7 @@
     { "repo": "agora",        "name": "Agora",        "bundleIdentifier": "com.jackvanhecke.agora",  "developerName": "JAVAC", "icon": "agora.png",        "iconSource": "../friend_news/assets/images/icon.png" },
     { "repo": "lumina",       "name": "Lumina",       "bundleIdentifier": "com.jackvanhecke.lumina", "developerName": "JAVAC", "icon": "lumina.png",       "iconSource": "../product reminder/assets/icon.png" },
     { "repo": "vigor",        "name": "Vigor",        "bundleIdentifier": "com.jackvanhecke.vigor",  "developerName": "JAVAC", "icon": "vigor.png",        "iconSource": "../vigor/assets/icon.png" },
-    { "repo": "dispatch",     "name": "Dispatch",     "bundleIdentifier": "com.jackvanhecke.dispatch","developerName": "JAVAC", "icon": "dispatch.png",     "iconSource": "../foto-reminder/dispatch/assets/icon.png" }
+    { "repo": "dispatch",     "name": "Dispatch",     "bundleIdentifier": "com.jackvanhecke.dispatch","developerName": "JAVAC", "icon": "dispatch.png",     "iconSource": "../foto-reminder/dispatch/assets/icon.png" },
+    { "repo": "Halo",         "name": "Halo",         "bundleIdentifier": "com.javac.halo",          "developerName": "JAVAC", "icon": "halo.png",         "iconSource": "../Halo/assets/icon.png" }
   ]
 }
