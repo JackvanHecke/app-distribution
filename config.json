@@ -14,6 +14,7 @@
     { "repo": "vigor",        "name": "Vigor",        "bundleIdentifier": "com.jackvanhecke.vigor",  "developerName": "JAVAC", "icon": "vigor.png",        "iconSource": "../vigor/assets/icon.png" },
     { "repo": "dispatch",     "name": "Dispatch",     "bundleIdentifier": "com.jackvanhecke.dispatch","developerName": "JAVAC", "icon": "dispatch.png",     "iconSource": "../foto-reminder/dispatch/assets/icon.png" },
     { "repo": "Halo",         "name": "Halo",         "bundleIdentifier": "com.javac.halo",          "developerName": "JAVAC", "icon": "halo.png",         "iconSource": "../Halo/assets/icon.png" },
-  { "repo": "Tempo",        "name": "Tempo",        "bundleIdentifier": "com.javac.tempo",         "developerName": "JAVAC", "icon": "tempo.png",        "iconSource": "../Tempo/assets/icon.png" }
+  { "repo": "Tempo",        "name": "Tempo",        "bundleIdentifier": "com.javac.tempo",         "developerName": "JAVAC", "icon": "tempo.png",        "iconSource": "../Tempo/assets/icon.png" },
+    { "repo": "Fiscus",       "name": "Fiscus",       "bundleIdentifier": "com.javac.fiscus",        "developerName": "JAVAC", "icon": "fiscus.png",       "iconSource": "../Fiscus/Support/Assets.xcassets/AppIcon.appiconset/icon_1024.png" }
   ]
 }
