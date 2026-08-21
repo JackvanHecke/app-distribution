@@ -95,11 +95,11 @@
       "name": "Fiscus",
       "bundleIdentifier": "com.javac.fiscus",
       "developerName": "JAVAC",
-      "version": "1.0.0.1",
+      "version": "1.0.0.2",
       "versionDate": "2026-08-21",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/Fiscus.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/fiscus.png",
-      "size": 2796221,
+      "size": 2822226,
       "localizedDescription": "Sideload-build van Fiscus"
     }
   ]
