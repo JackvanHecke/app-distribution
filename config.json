@@ -17,6 +17,6 @@
   { "repo": "Tempo",        "name": "Tempo",        "bundleIdentifier": "com.javac.tempo",         "developerName": "JAVAC", "icon": "tempo.png",        "iconSource": "../Tempo/assets/icon.png" },
     { "repo": "forma",        "name": "cursa",        "bundleIdentifier": "com.jackvanhecke.cursa", "developerName": "JAVAC", "icon": "cursa.png",        "iconSource": "../cursa/assets/icon.png" },
   { "repo": "Fiscus",       "name": "Fiscus",       "bundleIdentifier": "com.javac.fiscus",        "developerName": "JAVAC", "icon": "fiscus.png",       "iconSource": "../Fiscus/Support/Assets.xcassets/AppIcon.appiconset/icon_1024.png" },
-  { "repo": "Loon",         "name": "Loon",         "bundleIdentifier": "com.javac.loon",          "developerName": "JAVAC", "icon": "loon.png",         "iconSource": "../Loon/assets/icon.png" }
+  { "repo": "Merces",       "name": "Merces",       "bundleIdentifier": "com.javac.merces",        "developerName": "JAVAC", "icon": "merces.png",       "iconSource": "../Merces/assets/icon.png" }
   ]
 }

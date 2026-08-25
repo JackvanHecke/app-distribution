@@ -103,15 +103,15 @@
       "localizedDescription": "Sideload-build van Fiscus"
     },
     {
-      "name": "Loon",
-      "bundleIdentifier": "com.javac.loon",
+      "name": "Merces",
+      "bundleIdentifier": "com.javac.merces",
       "developerName": "JAVAC",
-      "version": "1.0.0.2",
+      "version": "1.0.0.3",
       "versionDate": "2026-08-25",
-      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/Loon.ipa",
-      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/loon.png",
-      "size": 9109088,
-      "localizedDescription": "Sideload-build van Loon"
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/Merces.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/merces.png",
+      "size": 8818487,
+      "localizedDescription": "Sideload-build van Merces"
     }
   ]
 }
