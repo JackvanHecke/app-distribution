@@ -8,7 +8,10 @@ on:
   schedule:
     - cron: "*/30 * * * *" # elk half uur nieuwe app-builds oppikken
   repository_dispatch:
-    types: [new-ipa] # (optioneel) private repos kunnen dit direct triggeren
+    # De app-repo's sturen dit zodra hun build een release heeft gepubliceerd.
+    # Dat is de betrouwbare weg: de cron hieronder wordt door GitHub afgeknepen
+    # en draaide in de praktijk uren uit elkaar in plaats van elk half uur.
+    types: [new-ipa]
 
 permissions:
   contents: write
@@ -30,8 +33,15 @@ jobs:
           GH_TOKEN: ${{ secrets.DIST_TOKEN }}
         run: |
           if [ -z "${GH_TOKEN}" ]; then
-            echo "Geen DIST_TOKEN secret ingesteld — nog niks te doen. Zie README.md."
-            exit 0
+            # Bewust falen, niet stilletjes slagen. Zonder token haalt deze
+            # workflow niets op, en een groen vinkje bij een bron die
+            # maandenlang stilstaat is erger dan een rood kruis.
+            echo "::error::DIST_TOKEN ontbreekt. Zonder dat token kan deze"
+            echo "::error::workflow niet in de private app-repos kijken en"
+            echo "::error::blijft de bron op de oude versies staan."
+            echo "::error::Zet hem bij: Settings -> Secrets and variables ->"
+            echo "::error::Actions -> New repository secret, naam DIST_TOKEN."
+            exit 1
           fi
           bash scripts/collect.sh
 
