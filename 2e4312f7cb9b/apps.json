@@ -19,11 +19,11 @@
       "name": "Agora",
       "bundleIdentifier": "com.jackvanhecke.agora",
       "developerName": "JAVAC",
-      "version": "1.0.0.8",
+      "version": "1.0.0.9",
       "versionDate": "2026-09-02",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/agora.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/agora.png",
-      "size": 14017722,
+      "size": 14017726,
       "localizedDescription": "Sideload-build van Agora"
     },
     {
@@ -85,11 +85,11 @@
       "name": "cursa",
       "bundleIdentifier": "com.jackvanhecke.cursa",
       "developerName": "JAVAC",
-      "version": "1.0.0.37",
+      "version": "1.0.0.38",
       "versionDate": "2026-09-02",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/forma.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/cursa.png",
-      "size": 12747691,
+      "size": 12747688,
       "localizedDescription": "Sideload-build van cursa"
     },
     {
