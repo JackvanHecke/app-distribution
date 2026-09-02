@@ -140,11 +140,11 @@
       "name": "Culina",
       "bundleIdentifier": "com.jackvanhecke.culina",
       "developerName": "JAVAC",
-      "version": "1.0.0.1",
+      "version": "1.0.0.2",
       "versionDate": "2026-09-03",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/culina.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/culina.png",
-      "size": 10713762,
+      "size": 10712960,
       "localizedDescription": "Sideload-build van Culina"
     }
   ]
