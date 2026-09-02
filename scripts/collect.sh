@@ -82,9 +82,12 @@ done
 srcname=$(jq -r .source.name "$CFG")
 srcid=$(jq -r .source.identifier "$CFG")
 sub=$(jq -r .source.subtitle "$CFG")
+# Zonder een eigen icoon pakt LiveContainer dat van de eerste app in de lijst.
+srcicon=$(jq -r '.source.iconURL // ""' "$CFG")
 mkdir -p "$(dirname "$OUT")"
-jq -n --arg n "$srcname" --arg id "$srcid" --arg s "$sub" --argjson apps "$entries" \
-  '{name:$n, identifier:$id, subtitle:$s, apps:$apps}' > "$OUT"
+jq -n --arg n "$srcname" --arg id "$srcid" --arg s "$sub" --arg icon "$srcicon" \
+      --argjson apps "$entries" \
+  '{name:$n, identifier:$id, subtitle:$s, iconURL:$icon, apps:$apps}' > "$OUT"
 
 echo "----------------------------------------------------------------------"
 echo "Bron geschreven: $OUT  ($(jq '.apps|length' "$OUT") apps)"
