@@ -10,60 +10,12 @@
   },
   "apps": [
     {
-      "repo": "Snusscounter",
-      "name": "Snusscounter",
-      "bundleIdentifier": "com.snusscounter.app",
+      "repo": "culina",
+      "name": "Culina",
+      "bundleIdentifier": "com.jackvanhecke.culina",
       "developerName": "JAVAC",
-      "icon": "Snusscounter.png",
-      "iconSource": "../mobile/Snusscounter/assets/icon.png"
-    },
-    {
-      "repo": "agora",
-      "name": "Agora",
-      "bundleIdentifier": "com.jackvanhecke.agora",
-      "developerName": "JAVAC",
-      "icon": "agora.png",
-      "iconSource": "../mobile/friend_news/assets/images/icon.png"
-    },
-    {
-      "repo": "lumina",
-      "name": "Lumina",
-      "bundleIdentifier": "com.jackvanhecke.lumina",
-      "developerName": "JAVAC",
-      "icon": "lumina.png",
-      "iconSource": "../mobile/product reminder/assets/icon.png"
-    },
-    {
-      "repo": "vigor",
-      "name": "Vigor",
-      "bundleIdentifier": "com.jackvanhecke.vigor",
-      "developerName": "JAVAC",
-      "icon": "vigor.png",
-      "iconSource": "../mobile/vigor/assets/icon.png"
-    },
-    {
-      "repo": "dispatch",
-      "name": "Dispatch",
-      "bundleIdentifier": "com.jackvanhecke.dispatch",
-      "developerName": "JAVAC",
-      "icon": "dispatch.png",
-      "iconSource": "../mobile/Dispatch/assets/icon.png"
-    },
-    {
-      "repo": "Halo",
-      "name": "Halo",
-      "bundleIdentifier": "com.javac.halo",
-      "developerName": "JAVAC",
-      "icon": "halo.png",
-      "iconSource": "../mobile/Halo/assets/icon.png"
-    },
-    {
-      "repo": "Tempo",
-      "name": "Tempo",
-      "bundleIdentifier": "com.javac.tempo",
-      "developerName": "JAVAC",
-      "icon": "tempo.png",
-      "iconSource": "../mobile/Tempo/assets/icon.png"
+      "icon": "culina.png",
+      "iconSource": "../mobile/Culina/assets/images/icon.png"
     },
     {
       "repo": "forma",
@@ -74,6 +26,14 @@
       "iconSource": "../mobile/cursa/assets/icon.png"
     },
     {
+      "repo": "dispatch",
+      "name": "Dispatch",
+      "bundleIdentifier": "com.jackvanhecke.dispatch",
+      "developerName": "JAVAC",
+      "icon": "dispatch.png",
+      "iconSource": "../mobile/Dispatch/assets/icon.png"
+    },
+    {
       "repo": "Fiscus",
       "name": "Fiscus",
       "bundleIdentifier": "com.javac.fiscus",
@@ -82,12 +42,28 @@
       "iconSource": "../mobile/Fiscus/Support/Assets.xcassets/AppIcon.appiconset/icon_1024.png"
     },
     {
-      "repo": "Merces",
-      "name": "Merces",
-      "bundleIdentifier": "com.javac.merces",
+      "repo": "forma-coach",
+      "name": "forma",
+      "bundleIdentifier": "com.jackvanhecke.forma",
       "developerName": "JAVAC",
-      "icon": "merces.png",
-      "iconSource": "../mobile/Merces/assets/icon.png"
+      "icon": "forma.png",
+      "iconSource": "../mobile/forma/App/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
+      "repo": "agora",
+      "name": "Agora",
+      "bundleIdentifier": "com.jackvanhecke.agora",
+      "developerName": "JAVAC",
+      "icon": "agora.png",
+      "iconSource": "../mobile/friend_news/assets/images/icon.png"
+    },
+    {
+      "repo": "Halo",
+      "name": "Halo",
+      "bundleIdentifier": "com.javac.halo",
+      "developerName": "JAVAC",
+      "icon": "halo.png",
+      "iconSource": "../mobile/Halo/assets/icon.png"
     },
     {
       "repo": "LottoLab",
@@ -98,6 +74,30 @@
       "iconSource": "../mobile/LottoLab/Sources/LottoLabiOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     },
     {
+      "repo": "ludus",
+      "name": "Ludus",
+      "bundleIdentifier": "com.jackvanhecke.ludus",
+      "developerName": "JAVAC",
+      "icon": "ludus.png",
+      "iconSource": "../mobile/Ludus/assets/icon.png"
+    },
+    {
+      "repo": "Merces",
+      "name": "Merces",
+      "bundleIdentifier": "com.javac.merces",
+      "developerName": "JAVAC",
+      "icon": "merces.png",
+      "iconSource": "../mobile/Merces/assets/icon.png"
+    },
+    {
+      "repo": "lumina",
+      "name": "Lumina",
+      "bundleIdentifier": "com.jackvanhecke.lumina",
+      "developerName": "JAVAC",
+      "icon": "lumina.png",
+      "iconSource": "../mobile/product reminder/assets/icon.png"
+    },
+    {
       "repo": "SimpleSave",
       "name": "SimpleSave",
       "bundleIdentifier": "com.javac.simplesave",
@@ -106,12 +106,28 @@
       "iconSource": "../mobile/SimpleSave/assets/icon.png"
     },
     {
-      "repo": "culina",
-      "name": "Culina",
-      "bundleIdentifier": "com.jackvanhecke.culina",
+      "repo": "Snusscounter",
+      "name": "vana",
+      "bundleIdentifier": "com.snusscounter.app",
       "developerName": "JAVAC",
-      "icon": "culina.png",
-      "iconSource": "../mobile/Culina/assets/images/icon.png"
+      "icon": "vana.png",
+      "iconSource": "../mobile/Snusscounter/assets/icon.png"
+    },
+    {
+      "repo": "Tempo",
+      "name": "Tempo",
+      "bundleIdentifier": "com.javac.tempo",
+      "developerName": "JAVAC",
+      "icon": "tempo.png",
+      "iconSource": "../mobile/Tempo/assets/icon.png"
+    },
+    {
+      "repo": "vigor",
+      "name": "Vigor",
+      "bundleIdentifier": "com.jackvanhecke.vigor",
+      "developerName": "JAVAC",
+      "icon": "vigor.png",
+      "iconSource": "../mobile/vigor/assets/icon.png"
     },
     {
       "repo": "Vestigia",
