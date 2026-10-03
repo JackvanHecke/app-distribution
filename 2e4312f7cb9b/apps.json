@@ -63,11 +63,11 @@
       "name": "forma",
       "bundleIdentifier": "com.jackvanhecke.forma",
       "developerName": "JAVAC",
-      "version": "1.0.2610031141",
+      "version": "1.0.2610031208",
       "versionDate": "2026-10-03",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/forma-coach.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/forma.png",
-      "size": 2684663,
+      "size": 2688826,
       "localizedDescription": "Sideload-build van forma"
     },
     {
