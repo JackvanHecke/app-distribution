@@ -5,6 +5,17 @@
   "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/javac-source.png",
   "apps": [
     {
+      "name": "Cerebrum",
+      "bundleIdentifier": "com.jackvanhecke.cerebrum",
+      "developerName": "JAVAC",
+      "version": "1.0.2610031139",
+      "versionDate": "2026-10-03",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/cerebrum.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/cerebrum.png",
+      "size": 1615808,
+      "localizedDescription": "Sideload-build van Cerebrum"
+    },
+    {
       "name": "Culina",
       "bundleIdentifier": "com.jackvanhecke.culina",
       "developerName": "JAVAC",
