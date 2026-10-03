@@ -10,6 +10,14 @@
   },
   "apps": [
     {
+      "repo": "cerebrum",
+      "name": "Cerebrum",
+      "bundleIdentifier": "com.jackvanhecke.cerebrum",
+      "developerName": "JAVAC",
+      "icon": "cerebrum.png",
+      "iconSource": "../mobile/Cerebrum/App/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
       "repo": "culina",
       "name": "Culina",
       "bundleIdentifier": "com.jackvanhecke.culina",
