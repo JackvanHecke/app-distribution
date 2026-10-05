@@ -179,6 +179,17 @@
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/vigor.png",
       "size": 9217531,
       "localizedDescription": "Sideload-build van Vigor"
+    },
+    {
+      "name": "Roastfuel",
+      "bundleIdentifier": "be.roastfuel.app",
+      "developerName": "Roastfuel",
+      "version": "1.0.0.1",
+      "versionDate": "2026-10-05",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/roastfuel.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/roastfuel.png",
+      "size": 10727723,
+      "localizedDescription": "Sideload-build van Roastfuel"
     }
   ]
 }
