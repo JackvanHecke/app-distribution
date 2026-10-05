@@ -144,6 +144,15 @@
       "developerName": "JAVAC",
       "icon": "vestigia.png",
       "iconSource": "../laptop/Vestigia/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
+      "repo": "roastfuel",
+      "name": "Roastfuel",
+      "bundleIdentifier": "be.roastfuel.app",
+      "developerName": "Roastfuel",
+      "icon": "roastfuel.png",
+      "iconSource": "../roastfuel/assets/icon.png",
+      "extern": true
     }
   ]
 }
