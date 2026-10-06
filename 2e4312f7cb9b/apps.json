@@ -184,11 +184,11 @@
       "name": "Roastfuel",
       "bundleIdentifier": "be.roastfuel.app",
       "developerName": "Roastfuel",
-      "version": "1.0.0.2",
+      "version": "1.0.0.3",
       "versionDate": "2026-10-06",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/roastfuel.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/roastfuel.png",
-      "size": 10728831,
+      "size": 10729951,
       "localizedDescription": "Sideload-build van Roastfuel"
     }
   ]
