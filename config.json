@@ -138,6 +138,14 @@
       "iconSource": "../mobile/vigor/assets/icon.png"
     },
     {
+      "repo": "Lectio",
+      "name": "Lectio",
+      "bundleIdentifier": "com.javac.lectio",
+      "developerName": "JAVAC",
+      "icon": "lectio.png",
+      "iconSource": "../laptop/Lectio/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
       "repo": "Vestigia",
       "name": "Vestigia",
       "bundleIdentifier": "com.javac.vestigia",
