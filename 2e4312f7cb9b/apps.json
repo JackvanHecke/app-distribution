@@ -49,6 +49,17 @@
       "localizedDescription": "Sideload-build van Dispatch"
     },
     {
+      "name": "Fiscus",
+      "bundleIdentifier": "com.javac.fiscus",
+      "developerName": "JAVAC",
+      "version": "1.0.0.4",
+      "versionDate": "2026-10-19",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/Fiscus.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/fiscus.png",
+      "size": 2838426,
+      "localizedDescription": "Sideload-build van Fiscus"
+    },
+    {
       "name": "forma",
       "bundleIdentifier": "com.jackvanhecke.forma",
       "developerName": "JAVAC",
