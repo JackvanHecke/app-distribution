@@ -42,14 +42,6 @@
       "iconSource": "../mobile/Dispatch/assets/icon.png"
     },
     {
-      "repo": "Fiscus",
-      "name": "Fiscus",
-      "bundleIdentifier": "com.javac.fiscus",
-      "developerName": "JAVAC",
-      "icon": "fiscus.png",
-      "iconSource": "../mobile/Fiscus/Support/Assets.xcassets/AppIcon.appiconset/icon_1024.png"
-    },
-    {
       "repo": "forma-coach",
       "name": "forma",
       "bundleIdentifier": "com.jackvanhecke.forma",
