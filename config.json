@@ -98,6 +98,14 @@
       "iconSource": "../mobile/product reminder/assets/icon.png"
     },
     {
+      "repo": "ravebud",
+      "name": "Ravebud",
+      "bundleIdentifier": "com.jackvanhecke.ravebud",
+      "developerName": "JAVAC",
+      "icon": "ravebud.png",
+      "iconSource": "../mobile/Ravebud/App/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
       "repo": "SimpleSave",
       "name": "SimpleSave",
       "bundleIdentifier": "com.javac.simplesave",

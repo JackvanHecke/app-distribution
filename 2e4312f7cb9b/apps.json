@@ -16,17 +16,6 @@
       "localizedDescription": "Sideload-build van Cerebrum"
     },
     {
-      "name": "Culina",
-      "bundleIdentifier": "com.jackvanhecke.culina",
-      "developerName": "JAVAC",
-      "version": "1.0.0.4",
-      "versionDate": "2026-10-20",
-      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/culina.ipa",
-      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/culina.png",
-      "size": 13280800,
-      "localizedDescription": "Sideload-build van Culina"
-    },
-    {
       "name": "cursa",
       "bundleIdentifier": "com.jackvanhecke.cursa",
       "developerName": "JAVAC",
@@ -190,6 +179,61 @@
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/roastfuel.png",
       "size": 10735775,
       "localizedDescription": "Sideload-build van Roastfuel"
+    },
+    {
+      "name": "Ravebud",
+      "bundleIdentifier": "com.jackvanhecke.ravebud",
+      "developerName": "JAVAC",
+      "version": "1.0.3",
+      "versionDate": "2026-10-30",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/ravebud.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/ravebud.png",
+      "size": 5020640,
+      "localizedDescription": "Raves op een kaart met flyers, zien wie er gaat en samen afspreken. Voor iPhone en iPad."
+    },
+    {
+      "name": "Culina",
+      "bundleIdentifier": "com.jackvanhecke.culina",
+      "developerName": "JAVAC",
+      "version": "1.0.0.5",
+      "versionDate": "2026-10-30",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/culina.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/culina.png",
+      "size": 13330388,
+      "localizedDescription": "Je eigen kookboek: recepten, wat je in huis hebt, delen per bladzijde. Nieuw ontwerp voor iPhone en iPad, en recepten als pdf."
+    },
+    {
+      "name": "Reunie",
+      "bundleIdentifier": "com.jackvanhecke.reunie",
+      "developerName": "JAVAC",
+      "version": "0.1.0.1",
+      "versionDate": "2026-10-30",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/reunie.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/reunie.png",
+      "size": 6602822,
+      "localizedDescription": "Voor je Erasmusgroep: groepschat met foto's, samen plannen, verjaardagen en fotoherinneringen. Eerste versie (voorlopige naam); de demo werkt zonder account."
+    },
+    {
+      "name": "Cibus",
+      "bundleIdentifier": "com.jackvanhecke.cibus",
+      "developerName": "JAVAC",
+      "version": "1.0.1",
+      "versionDate": "2026-10-30",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/cibus.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/cibus.png",
+      "size": 19931316,
+      "localizedDescription": "Voedingsdagboek met 136.000 voedingsmiddelen en barcodes; je doelen volgen je Garmin-activiteit. Vraagt iOS 26."
+    },
+    {
+      "name": "Vestigia",
+      "bundleIdentifier": "com.javac.vestigia",
+      "developerName": "JAVAC",
+      "version": "1.0.0.1",
+      "versionDate": "2026-10-30",
+      "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/vestigia.ipa",
+      "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/vestigia.png",
+      "size": 879889,
+      "localizedDescription": "Onderzoeksdossier voor iPhone en iPad."
     }
   ]
 }
