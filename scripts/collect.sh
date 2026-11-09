@@ -31,6 +31,9 @@ gh release view "$REL" -R "$OWNER/$DIST" >/dev/null 2>&1 \
   || gh release create "$REL" -R "$OWNER/$DIST" -t "Latest IPAs" -n "Automatisch bijgewerkt door collect.sh"
 
 entries="[]"
+if [[ -f "$OUT" ]]; then
+  entries=$(jq --slurpfile cfg "$CFG" '[.apps[] | select(.bundleIdentifier as $id | ($cfg[0].localBundleIdentifiers // []) | index($id))]' "$OUT")
+fi
 n=$(jq '.apps | length' "$CFG")
 for i in $(seq 0 $((n - 1))); do
   repo=$(jq -r ".apps[$i].repo" "$CFG")

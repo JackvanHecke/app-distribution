@@ -162,5 +162,8 @@
       "iconSource": "../roastfuel/assets/icon.png",
       "extern": true
     }
+  ],
+  "localBundleIdentifiers": [
+    "com.jackvanhecke.simul"
   ]
 }
