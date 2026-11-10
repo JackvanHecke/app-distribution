@@ -114,6 +114,14 @@
       "iconSource": "../mobile/SimpleSave/assets/icon.png"
     },
     {
+      "repo": "Atlas",
+      "name": "Atlas",
+      "bundleIdentifier": "com.jackvanhecke.simul",
+      "developerName": "JAVAC",
+      "icon": "atlas.png",
+      "iconSource": "../mobile/Simul/App/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
       "repo": "Snusscounter",
       "name": "vana",
       "bundleIdentifier": "com.snusscounter.app",
@@ -162,8 +170,5 @@
       "iconSource": "../roastfuel/assets/icon.png",
       "extern": true
     }
-  ],
-  "localBundleIdentifiers": [
-    "com.jackvanhecke.simul"
   ]
 }
