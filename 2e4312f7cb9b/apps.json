@@ -240,10 +240,10 @@
       "bundleIdentifier": "com.jackvanhecke.simul",
       "developerName": "JAVAC",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/simul.png",
-      "localizedDescription": "Evenementen in Leuven",
-      "version": "1.0.2611100104",
-      "versionDate": "2026-11-10",
-      "size": 2791827,
+      "localizedDescription": "Wat er te doen is in Leuven: feestjes, fakbars met deals, concerten, workshops en sport. Ga samen met een groepje. Nederlands en Engels.",
+      "version": "1.0.2611111823",
+      "versionDate": "2026-11-11",
+      "size": 3013483,
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/simul.ipa"
     }
   ]
