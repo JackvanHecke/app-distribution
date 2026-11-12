@@ -8,11 +8,11 @@
       "name": "Cerebrum",
       "bundleIdentifier": "com.jackvanhecke.cerebrum",
       "developerName": "JAVAC",
-      "version": "1.0.2611120740",
+      "version": "1.0.2611120749",
       "versionDate": "2026-11-12",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/cerebrum.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/cerebrum.png",
-      "size": 2531491,
+      "size": 2534968,
       "localizedDescription": "Sideload-build van Cerebrum"
     },
     {
