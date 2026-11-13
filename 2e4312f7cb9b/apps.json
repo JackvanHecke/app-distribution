@@ -30,12 +30,12 @@
       "name": "Dispatch",
       "bundleIdentifier": "com.jackvanhecke.dispatch",
       "developerName": "JAVAC",
-      "version": "1.1.0.2611120022",
-      "versionDate": "2026-11-12",
+      "version": "1.1.0.2611130300",
+      "versionDate": "2026-11-13",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/dispatch.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/dispatch.png",
-      "size": 7912600,
-      "localizedDescription": "Reisdagboek voor je familie met foto’s en dagelijkse haltes. Vernieuwd ontwerp; Nederlands, Engels, Deens en Spaans. LiveContainer ondersteunt geen externe pushmeldingen."
+      "size": 9559700,
+      "localizedDescription": "Reisdagboek met eigen profiel, volgers, routes, foto’s en video’s. Vernieuwde privacy en volgcodes. LiveContainer ondersteunt geen externe pushmeldingen."
     },
     {
       "name": "forma",
