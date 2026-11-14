@@ -70,6 +70,15 @@ PY
   updir="$WORK/up_$repo"
   mkdir -p "$updir"
   cp "$ipa" "$updir/$outname"
+  # GitHub vergelijkt assetnamen zonder hoofdletters, --clobber niet: staat er
+  # nog vestigia.ipa en uploaden we Vestigia.ipa, dan volgt HTTP 422. Ruim zo'n
+  # oude naam eerst op (het wordt toch hetzelfde bestand).
+  lower=$(printf '%s' "$outname" | tr '[:upper:]' '[:lower:]')
+  for old in $(gh release view "$REL" -R "$OWNER/$DIST" --json assets -q '.assets[].name'); do
+    if [ "$old" != "$outname" ] && [ "$(printf '%s' "$old" | tr '[:upper:]' '[:lower:]')" = "$lower" ]; then
+      gh release delete-asset "$REL" "$old" -R "$OWNER/$DIST" -y
+    fi
+  done
   gh release upload "$REL" -R "$OWNER/$DIST" "$updir/$outname" --clobber
 
   entry=$(jq -n \
