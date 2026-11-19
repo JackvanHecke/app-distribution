@@ -151,11 +151,11 @@
       "name": "Atlas",
       "bundleIdentifier": "com.jackvanhecke.simul",
       "developerName": "JAVAC",
-      "version": "1.0.2611131250",
-      "versionDate": "2026-11-14",
+      "version": "1.0.2611192350",
+      "versionDate": "2026-11-19",
       "downloadURL": "https://github.com/JackvanHecke/app-distribution/releases/download/latest/Atlas.ipa",
       "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/atlas.png",
-      "size": 3219792,
+      "size": 3223860,
       "localizedDescription": "Sideload-build van Atlas"
     },
     {
