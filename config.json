@@ -162,6 +162,14 @@
       "iconSource": "../laptop/Vestigia/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     },
     {
+      "repo": "kaarten-en-slokken",
+      "name": "Kaarten & Slokken",
+      "bundleIdentifier": "com.javac.kaartenslokken",
+      "developerName": "JAVAC",
+      "icon": "kaartenslokken.png",
+      "iconSource": "../mobile/kaarten-en-slokken/App/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    },
+    {
       "repo": "roastfuel",
       "name": "Roastfuel",
       "bundleIdentifier": "be.roastfuel.app",
