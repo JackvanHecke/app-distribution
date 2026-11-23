@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kaarten &amp; Slokken</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky "tafelbalk" with the player count; game list as a hand of playing cards; each game opens as a rulebook page. */
+:root {
+  --ground: #E9EEEA;
+  --card: #FFFFFF;
+  --ink: #17211C;
+  --muted: #56645C;
+  --line: #CFD8D2;
+  --red: #C81F36;
+  --amber: #E39C12;
+  --amber-ink: #3A2600;
+  --felt: #1F4D3A;
+  --felt-ink: #F2F7F3;
+  --good: #1E7A4C;
+  --warn: #A86400;
+  --bad: #9A2B2B;
+  --shadow: 0 1px 0 rgba(23,33,28,.06), 0 6px 18px -8px rgba(23,33,28,.25);
+  --f-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0E1713; --card: #17241E; --ink: #E7EFEA; --muted: #9AABA1; --line: #2A3A32;
+    --red: #FF6177; --amber: #F2B53C; --amber-ink: #2B1C00; --felt: #143A2B; --felt-ink: #E7EFEA;
+    --good: #5ACB8E; --warn: #F0B04F; --bad: #FF7B7B;
+    --shadow: 0 1px 0 rgba(0,0,0,.3), 0 8px 22px -10px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0E1713; --card: #17241E; --ink: #E7EFEA; --muted: #9AABA1; --line: #2A3A32;
+  --red: #FF6177; --amber: #F2B53C; --amber-ink: #2B1C00; --felt: #143A2B; --felt-ink: #E7EFEA;
+  --good: #5ACB8E; --warn: #F0B04F; --bad: #FF7B7B;
+  --shadow: 0 1px 0 rgba(0,0,0,.3), 0 8px 22px -10px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--ground); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--felt); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0; }
+
+/* Tafelbalk */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--felt); color: var(--felt-ink);
+  border-bottom: 1px solid rgba(0,0,0,.2);
+}
+.bar-in, .wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bar-in { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; cursor: pointer; margin-right: auto; }
+.brand-mark { display: grid; place-items: center; width: 34px; height: 46px; border-radius: 6px; background: var(--card); color: var(--red); font-size: 22px; box-shadow: 0 2px 0 rgba(0,0,0,.25); transform: rotate(-6deg); }
+.brand-name { font-family: var(--f-display); font-weight: 800; font-size: 1.3rem; letter-spacing: -.01em; color: var(--felt-ink); }
+.ctrl { display: flex; align-items: center; gap: 8px; }
+.ctrl-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; opacity: .8; font-weight: 600; }
+.stepper { display: flex; align-items: center; background: rgba(255,255,255,.1); border-radius: 999px; padding: 3px; }
+.stepper button { width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: var(--felt-ink); font-size: 1.2rem; font-weight: 700; cursor: pointer; line-height: 1; }
+.stepper button:hover { background: rgba(255,255,255,.26); }
+.stepper button:disabled { opacity: .35; cursor: default; }
+.stepper output { min-width: 2.4ch; text-align: center; font-family: var(--f-mono); font-size: 1.25rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.seg { display: flex; background: rgba(255,255,255,.1); border-radius: 999px; padding: 3px; }
+.seg button { border: 0; background: transparent; color: var(--felt-ink); padding: 6px 12px; border-radius: 999px; font-size: .85rem; font-weight: 600; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--amber); color: var(--amber-ink); }
+
+/* Home */
+.intro { padding-block: 36px 8px; display: grid; gap: 10px; }
+.intro h1 { font-size: clamp(2rem, 5.5vw, 3.4rem); font-weight: 800; letter-spacing: -.025em; max-width: 16ch; }
+.intro h1 em { font-style: normal; color: var(--red); }
+.intro p { margin: 0; color: var(--muted); max-width: 60ch; font-size: 1.05rem; }
+.filterrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 18px 14px; }
+.filterrow .count { font-size: .95rem; color: var(--muted); }
+.filterrow .count b { color: var(--ink); }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--muted); cursor: pointer; }
+.toggle input { width: 18px; height: 18px; accent-color: var(--felt); }
+
+.hand { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 18px; padding-bottom: 40px; }
+.pcard {
+  position: relative; text-align: left; cursor: pointer;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 18px 18px 46px 52px; min-height: 200px;
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 8px;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.pcard:hover { transform: translateY(-4px) rotate(-.6deg); }
+.pcard.off { opacity: .55; }
+.idx { position: absolute; display: flex; flex-direction: column; align-items: center; line-height: 1; font-family: var(--f-display); font-weight: 800; }
+.idx .r { font-size: 1.25rem; }
+.idx .s { font-size: 1.1rem; margin-top: 2px; }
+.idx.tl { top: 14px; left: 14px; }
+.idx.br { bottom: 12px; right: 14px; transform: rotate(180deg); }
+.red { color: var(--red); }
+.pcard h2 { font-size: 1.45rem; font-weight: 750; letter-spacing: -.01em; }
+.pcard p { margin: 0; font-size: .93rem; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .8rem; color: var(--muted); font-family: var(--f-mono); margin-top: auto; }
+.fit { align-self: flex-start; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; padding: 3px 9px; border-radius: 999px; border: 1.5px solid currentColor; }
+.fit.ideal { color: var(--good); }
+.fit.kan { color: var(--warn); }
+.fit.niet { color: var(--bad); }
+
+/* Detail */
+.back { display: inline-flex; align-items: center; gap: 6px; margin-top: 22px; border: 0; background: none; color: var(--muted); font-weight: 600; cursor: pointer; padding: 6px 0; }
+.back:hover { color: var(--ink); }
+.ghero { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; padding-block: 14px 26px; }
+.bigcard { width: 104px; height: 144px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); position: relative; display: grid; place-items: center; font-size: 3rem; transform: rotate(-4deg); }
+.bigcard .idx.tl { top: 8px; left: 9px; }
+.bigcard .idx.br { bottom: 8px; right: 9px; }
+.ghero h1 { font-size: clamp(2.1rem, 6vw, 3.6rem); font-weight: 800; letter-spacing: -.025em; }
+.ghero .tag { margin: 6px 0 12px; color: var(--muted); font-size: 1.08rem; max-width: 55ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: .82rem; padding: 4px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-weight: 600; }
+.chip span { color: var(--muted); font-weight: 500; }
+
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 28px; align-items: start; padding-bottom: 48px; }
+.aside { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); display: grid; gap: 16px; }
+.table-panel { background: var(--felt); color: var(--felt-ink); border-radius: 16px; padding: 20px; display: grid; gap: 14px; }
+.table-panel h3 { font-size: 1.15rem; }
+.table-panel .warnbox { background: rgba(255,255,255,.12); border-radius: 10px; padding: 10px 12px; font-size: .9rem; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat { background: rgba(255,255,255,.08); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.stat b { display: block; font-family: var(--f-mono); font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.stat small { font-size: .78rem; opacity: .85; }
+.stat.wide { grid-column: 1 / -1; }
+.roles { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.roles li { display: flex; justify-content: space-between; gap: 10px; font-size: .92rem; padding: 6px 10px; background: rgba(255,255,255,.08); border-radius: 8px; }
+.roles li span:last-child { opacity: .8; font-family: var(--f-mono); font-size: .8rem; }
+.panel-note { font-size: .86rem; opacity: .9; margin: 0; }
+
+.sec { display: grid; gap: 12px; padding-block: 6px 26px; }
+.sec + .sec { border-top: 1px solid var(--line); padding-top: 24px; }
+.sec h2 { font-size: 1.45rem; font-weight: 750; display: flex; align-items: center; gap: 10px; }
+.sec h2 .pip { font-size: 1.1rem; }
+.sec p { margin: 0; max-width: 65ch; }
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px; max-width: 68ch; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+.steps li::before { content: counter(s); font-family: var(--f-mono); font-size: .85rem; font-weight: 500; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--line); color: var(--muted); margin-top: -1px; }
+.bul { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 68ch; }
+
+.drinks { display: grid; gap: 8px; }
+.drink { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.drink .w { font-weight: 600; }
+.drink .n { font-size: .88rem; color: var(--muted); margin-top: 2px; }
+.coaster { width: 62px; height: 62px; border-radius: 50%; background: var(--amber); color: var(--amber-ink); display: grid; place-content: center; text-align: center; box-shadow: inset 0 0 0 4px rgba(255,255,255,.35), inset 0 0 0 6px var(--amber); line-height: 1; }
+.coaster b { font-family: var(--f-display); font-weight: 800; font-size: 1.35rem; }
+.coaster small { font-size: .62rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; margin-top: 2px; }
+.coaster.txt b { font-size: .9rem; }
+.slok { display: inline-block; background: var(--amber); color: var(--amber-ink); font-weight: 700; font-size: .85em; padding: 0 .5em; border-radius: 999px; white-space: nowrap; }
+
+.cardrules { display: grid; gap: 6px; }
+.crule { display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: start; padding: 10px 12px; border-radius: 10px; border: 1px solid transparent; transition: background .2s, border-color .2s; }
+.crule.hit { background: var(--card); border-color: var(--amber); box-shadow: var(--shadow); }
+.crank { width: 40px; height: 54px; border-radius: 6px; background: var(--card); border: 1px solid var(--line); display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.1rem; }
+.crule b { display: block; }
+.crule span { font-size: .93rem; color: var(--muted); }
+.draw { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: var(--card); border: 1px dashed var(--line); border-radius: 14px; padding: 14px; }
+.btn { border: 0; background: var(--ink); color: var(--card); font-weight: 700; padding: 10px 16px; border-radius: 999px; cursor: pointer; }
+.btn:hover { opacity: .88; }
+.drawn { width: 58px; height: 80px; border-radius: 8px; border: 1px solid var(--line); background: var(--ground); display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 1.3rem; line-height: 1.05; text-align: center; }
+.drawn.flip { animation: flip .35s ease; }
+@keyframes flip { from { transform: rotateY(90deg); } to { transform: rotateY(0); } }
+.drawtxt { flex: 1 1 180px; min-width: 0; font-size: .95rem; }
+.drawtxt b { display: block; }
+
+.foot { border-top: 1px solid var(--line); padding-block: 22px 34px; color: var(--muted); font-size: .88rem; }
+.foot p { margin: 0; max-width: 70ch; }
+
+@media (max-width: 860px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .aside { position: static; order: -1; }
+}
+@media (max-width: 520px) {
+  .bar-in { gap: 10px; }
+  .brand { width: 100%; }
+  .ctrl-label { display: none; }
+  .ghero { grid-template-columns: 1fr; }
+  .bigcard { width: 76px; height: 104px; font-size: 2.2rem; }
+  .pcard { min-height: 0; }
+}
+/* ---------- Beweging ---------- */
+.intro { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px 32px; }
+.intro-text { display: grid; gap: 10px; min-width: 0; }
+.table-fan { display: grid; justify-items: center; gap: 6px; }
+.fan { position: relative; width: 300px; max-width: 80vw; height: 180px; animation: sway 6s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+.seat {
+  position: absolute; left: calc(50% - 31px); bottom: 0; width: 62px; height: 88px;
+  border-radius: 7px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow);
+  display: grid; place-items: center; font-size: 1.35rem; font-family: var(--f-display); font-weight: 800;
+  transform-origin: 50% 115%;
+  transform: rotate(var(--a)) translateY(-14px);
+  animation: fanout .6s cubic-bezier(.2,.9,.25,1.25) backwards;
+  animation-delay: calc(var(--k) * 30ms);
+}
+.seat:nth-child(odd) { background: linear-gradient(160deg, var(--card), var(--ground)); }
+.fan-cap { font-family: var(--f-mono); font-size: .85rem; color: var(--muted); }
+.fan-cap b { color: var(--ink); font-weight: 500; }
+@keyframes fanout { from { transform: rotate(0deg) translateY(0); opacity: .2; } }
+@keyframes sway { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+
+.pcard { transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px)); transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
+.pcard:hover { transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px); box-shadow: 0 2px 0 rgba(23,33,28,.06), 0 18px 32px -14px rgba(23,33,28,.45); }
+.pcard::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(240px circle at var(--gx, 50%) var(--gy, 0%), rgba(255,255,255,.35), transparent 60%); opacity: 0; transition: opacity .25s; }
+.pcard:hover::after { opacity: 1; }
+.enter .pcard { animation: deal .6s cubic-bezier(.2,.85,.25,1) backwards; animation-delay: calc(var(--i) * 70ms + 80ms); }
+@keyframes deal { from { opacity: 0; transform: translate(var(--dx, 0px), -120px) rotate(var(--dr, -14deg)) scale(.85); } }
+
+.enter .intro-text > * { animation: rise .55s cubic-bezier(.2,.8,.2,1) backwards; }
+.enter .intro-text > *:nth-child(2) { animation-delay: .08s; }
+.enter .ghero .bigcard { animation: dealbig .7s cubic-bezier(.2,.9,.3,1.2) backwards; }
+.ghero .bigcard { animation: float 5s ease-in-out infinite alternate; }
+.enter .ghero > div:last-child { animation: rise .5s .1s cubic-bezier(.2,.8,.2,1) backwards; }
+.enter .sec, .enter .table-panel { animation: rise .55s cubic-bezier(.2,.8,.2,1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 150ms); }
+.enter .drink { animation: slidein .45s cubic-bezier(.2,.8,.2,1) backwards; animation-delay: calc(var(--i, 0) * 55ms + 400ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes slidein { from { opacity: 0; transform: translateX(-16px); } }
+@keyframes dealbig { from { opacity: 0; transform: translate(-60px, -80px) rotate(-40deg) scale(.6); } }
+@keyframes float { from { transform: rotate(-5deg) translateY(0); } to { transform: rotate(-2deg) translateY(-6px); } }
+
+.bump-n .stat b, .bump-n .fit, .bump-n .roles li, .bump-n .count b, .bump-n .steps li::before { animation: bump .45s cubic-bezier(.3,1.6,.5,1); }
+.bump-n .roles li { animation-delay: calc(var(--i, 0) * 25ms); }
+.bump-lv .coaster { animation: spin .6s cubic-bezier(.3,1.3,.5,1); }
+.bump-lv .slok { animation: bump .45s cubic-bezier(.3,1.6,.5,1); }
+@keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes spin { from { transform: perspective(300px) rotateY(-180deg) scale(.8); } to { transform: perspective(300px) rotateY(0) scale(1); } }
+.stat b, .fit, .roles li, .slok { display: inline-block; }
+.stat b { display: block; transform-origin: left center; }
+
+.coaster { transition: transform .3s cubic-bezier(.3,1.5,.5,1); }
+.drink:hover .coaster { transform: rotate(-14deg) scale(1.06); }
+.drink { transition: transform .2s ease, border-color .2s; }
+.drink:hover { transform: translateX(4px); border-color: var(--amber); }
+.btn { transition: transform .15s ease, opacity .15s; }
+.btn:active { transform: scale(.95); }
+.stepper button, .seg button { transition: background .2s, transform .12s; }
+.stepper button:active { transform: scale(.88); }
+.brand-mark { transition: transform .4s cubic-bezier(.3,1.6,.5,1); }
+.brand:hover .brand-mark { transform: rotate(8deg) scale(1.08); }
+.drawn { perspective: 600px; }
+.drawn.flip { animation: flip3d .55s cubic-bezier(.2,.8,.3,1.2); }
+@keyframes flip3d { 0% { transform: translateY(-30px) rotateY(180deg) scale(.7); opacity: .3; } 100% { transform: none; opacity: 1; } }
+.crule.hit .crank { animation: bump .45s cubic-bezier(.3,1.6,.5,1); background: var(--amber); color: var(--amber-ink); border-color: var(--amber); }
+
+@media (max-width: 720px) {
+  .intro { grid-template-columns: minmax(0, 1fr); }
+  .table-fan { justify-self: center; }
+}
+@media (hover: none) { .pcard::after { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+  .pcard, .pcard:hover { transform: none; }
+}
+</style>
+<style>html{color-scheme:light}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <button class="brand" id="home-btn" aria-label="Naar het overzicht">
+      <span class="brand-mark" aria-hidden="true">♥</span>
+      <span class="brand-name">Kaarten &amp; Slokken</span>
+    </button>
+    <div class="ctrl">
+      <span class="ctrl-label" id="pl-label">Spelers</span>
+      <div class="stepper" role="group" aria-labelledby="pl-label">
+        <button id="pl-min" aria-label="Eén speler minder">−</button>
+        <output id="pl-out" aria-live="polite">5</output>
+        <button id="pl-plus" aria-label="Eén speler meer">+</button>
+      </div>
+    </div>
+    <div class="ctrl">
+      <span class="ctrl-label" id="lv-label">Slokken</span>
+      <div class="seg" role="group" aria-labelledby="lv-label" id="level"></div>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="wrap foot">
+  <p>Alleen voor 18+. Drink met mate en wissel af met water; een slok fris telt net zo goed. Niemand hoeft mee te drinken, en huisregels gaan altijd voor wat hier staat.</p>
+</footer>
+
+<script>
+(function () {
+  const RED = ["♥", "♦"];
+  const LEVELS = [
+    { id: "rustig", label: "Rustig" },
+    { id: "normaal", label: "Normaal" },
+    { id: "stevig", label: "Stevig" }
+  ];
+  const state = { n: 5, level: "normaal", onlyFit: false };
+  try {
+    const saved = JSON.parse(localStorage.getItem("kns") || "{}");
+    if (saved.n >= 2 && saved.n <= 20) state.n = saved.n;
+    if (LEVELS.some(l => l.id === saved.level)) state.level = saved.level;
+    if (typeof saved.onlyFit === "boolean") state.onlyFit = saved.onlyFit;
+  } catch (e) {}
+  function save() { try { localStorage.setItem("kns", JSON.stringify(state)); } catch (e) {} }
+
+  /* ---------- Slokken ---------- */
+  function scale(x) {
+    if (state.level === "rustig") return Math.max(1, Math.round(x / 2));
+    if (state.level === "stevig") return x * 2;
+    return x;
+  }
+  function slokWord(k) { return k === 1 ? "slok" : "slokken"; }
+  const ADT = { rustig: "4 slokken", normaal: "half glas", stevig: "adtje" };
+  function sipText(tok) {
+    if (tok === "adt") return ADT[state.level];
+    const k = scale(Number(tok));
+    return k + " " + slokWord(k);
+  }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function rich(s) {
+    return esc(s)
+      .replace(/\[\[(\w+)\]\]/g, (m, t) => '<span class="slok">' + sipText(t) + "</span>")
+      .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+  }
+  function coaster(sips) {
+    if (typeof sips === "number") {
+      const k = scale(sips);
+      return '<div class="coaster" aria-label="' + k + " " + slokWord(k) + '"><b>' + k + "</b><small>" + slokWord(k) + "</small></div>";
+    }
+    const t = sips === "adt" ? ADT[state.level] : sips;
+    return '<div class="coaster txt"><b>' + esc(t) + "</b></div>";
+  }
+
+  /* ---------- Spellen ---------- */
+  const GAMES = [
+    {
+      id: "presidenten", name: "Presidenten", rank: "P", suit: "♠",
+      tagline: "Wie als eerste zijn kaarten kwijt is wordt President. Wie laatste wordt is de Boer en moet de rest bedienen.",
+      min: 3, max: 10, ideal: [4, 7], duration: "30–60 min", level: "Makkelijk",
+      calc(n) {
+        const decks = n >= 8 ? 2 : 1;
+        const total = 52 * decks;
+        const per = Math.floor(total / n), rest = total % n;
+        let roles;
+        if (n <= 3) roles = [["President", "1e"], ["Burger", "2e"], ["Boer", "laatste"]];
+        else {
+          roles = [["President", "1e"], ["Vice-president", "2e"]];
+          for (let i = 0; i < n - 4; i++) roles.push(["Burger", (i + 3) + "e"]);
+          roles.push(["Vice-boer", "voorlaatste"], ["Boer", "laatste"]);
+        }
+        return {
+          stats: [
+            [decks, decks === 1 ? "kaartspel (zonder jokers)" : "kaartspellen door elkaar"],
+            [per, "kaarten per speler"],
+            [rest, rest === 1 ? "kaart over" : "kaarten over"],
+            [n <= 3 ? "1 ↔ 1" : "2 ↔ 2", "kaarten ruilen Boer ↔ President"]
+          ],
+          roles,
+          note: rest ? "De kaarten die overblijven geef je aan de eerste spelers links van de deler, één per persoon." : "Alles komt precies uit, niemand krijgt een extra kaart."
+        };
+      },
+      goal: "Zo snel mogelijk al je kaarten kwijtraken. De volgorde waarin spelers uitkomen bepaalt ieders rol voor de volgende ronde.",
+      prep: n => [
+        "Pak " + (n >= 8 ? "twee kaartspellen en schud ze door elkaar" : "één kaartspel zonder jokers") + ".",
+        "Deel alle kaarten één voor één uit, ook als niet iedereen evenveel krijgt.",
+        "Sorteer je hand van laag naar hoog. De volgorde is: 3, 4, 5, 6, 7, 8, 9, 10, Boer, Vrouw, Heer, Aas en de **2 is de hoogste kaart**.",
+        "Spreek af wie de eerste ronde begint: meestal degene met klaveren 3."
+      ],
+      play: [
+        "De beginner legt één kaart, of een set gelijke kaarten (twee, drie of vier van dezelfde waarde).",
+        "De volgende speler moet **hetzelfde aantal kaarten** leggen, maar hoger. Op twee zevens moet dus minstens twee achten.",
+        "Kun of wil je niet, dan zeg je ‘pas’. Je mag later in dezelfde slag weer meedoen.",
+        "Past iedereen, dan wordt de stapel weggelegd en begint de laatste legger een nieuwe slag met wat hij wil.",
+        "Wie al zijn kaarten kwijt is, is klaar. De rest speelt door tot er één over is: dat is de Boer.",
+        "Nieuwe ronde: de Boer deelt, en vóór het spelen wordt er geruild (zie rechts). Daarna begint de Boer."
+      ],
+      drinks: [
+        { w: "Boer aan het eind van de ronde", n: "Daarna schenkt de Boer de hele volgende ronde in voor de rest.", s: 4 },
+        { w: "Vice-boer aan het eind van de ronde", s: 2 },
+        { w: "President deelt uit", n: "Mag de slokken verdelen over wie hij wil.", s: 4 },
+        { w: "Vice-president deelt uit", s: 2 },
+        { w: "Iemand legt een 2 (hoogste kaart)", n: "Iedereen behalve de legger drinkt.", s: 1 },
+        { w: "Je legt een kaart die niet mag", n: "Kaart terug in je hand en je beurt is voorbij.", s: 2 },
+        { w: "Je overtreedt de regel van de President", n: "De President mag per ronde één regel verzinnen, zoals ‘niemand zegt drinken’.", s: 1 }
+      ],
+      tips: [
+        "**Overslaan:** leg je precies dezelfde waarde als de vorige kaart, dan wordt de volgende speler overgeslagen. Veel tafels spelen zo.",
+        "**Revolutie:** wie vier gelijke kaarten tegelijk legt, draait de volgorde om tot het eind van de ronde (3 is dan hoog).",
+        "Bewaar je 2'en voor het eind: het is de makkelijkste manier om een slag te winnen en daarna zelf te bepalen wat er komt.",
+        "De Boer moet bij het ruilen altijd zijn **hoogste** kaarten afgeven. De President mag zelf kiezen wat hij teruggeeft (meestal zijn slechtste)."
+      ]
+    },
+    {
+      id: "boerenbridge", name: "Boerenbridge", rank: "B", suit: "♦",
+      tagline: "Voorspel elke ronde hoeveel slagen je haalt. Zit je ernaast, dan drink je voor elke slag verschil.",
+      min: 3, max: 7, ideal: [4, 5], duration: "45–90 min", level: "Gemiddeld",
+      calc(n) {
+        const max = Math.max(1, Math.min(Math.floor(51 / n), 10));
+        return {
+          stats: [
+            [1, "kaartspel (zonder jokers)"],
+            [max, "kaarten in de grootste ronde"],
+            [2 * max - 1, "rondes in totaal"],
+            ["1 → " + max + " → 1", "verloop van het aantal kaarten", true]
+          ],
+          note: max === 10 && Math.floor(51 / n) > 10
+            ? "Je zou hoger kunnen, maar boven de 10 kaarten duurt een ronde erg lang. Spreek gerust een ander maximum af."
+            : "Na het uitdelen moet er altijd minstens één kaart overblijven om troef om te draaien."
+        };
+      },
+      goal: "Elke ronde precies het aantal slagen halen dat je vooraf hebt voorspeld. Niet meer en niet minder.",
+      prep: n => [
+        "Pak één kaartspel zonder jokers. Volgorde van laag naar hoog: 2 t/m 10, Boer, Vrouw, Heer, Aas.",
+        "De eerste ronde krijgt iedereen 1 kaart, de ronde daarna 2, enzovoort tot het maximum. Daarna tel je weer terug naar 1.",
+        "Na het delen draait de deler de bovenste kaart van de stapel om. Die kleur is **troef** voor deze ronde.",
+        "Leg pen en papier klaar om de voorspellingen te noteren. De deler schuift elke ronde één plek op naar links."
+      ],
+      play: [
+        "Iedereen bekijkt zijn kaarten. Links van de deler begint men om de beurt te zeggen hoeveel slagen hij denkt te halen.",
+        "**De deler zegt als laatste** en mag geen getal kiezen waardoor het totaal precies gelijk is aan het aantal kaarten. Zo zit er altijd iemand naast.",
+        "Links van de deler komt uit met een kaart. Iedereen moet de gevraagde kleur bijspelen (bekennen) als dat kan.",
+        "Heb je die kleur niet, dan mag je troeven of een willekeurige kaart afgooien.",
+        "De hoogste troef wint de slag. Ligt er geen troef, dan wint de hoogste kaart van de gevraagde kleur.",
+        "Wie de slag wint, komt de volgende keer uit. Aan het eind van de ronde tel je je slagen en vergelijk je met je voorspelling."
+      ],
+      drinks: [
+        { w: "Per slag dat je naast je voorspelling zit", n: "Twee te veel of twee te weinig betekent twee keer drinken.", s: 1 },
+        { w: "Precies goed voorspeld", n: "Deel dit uit per slag die je gehaald hebt.", s: 1 },
+        { w: "Nul geboden en nul gehaald", s: 2 },
+        { w: "Je vergeet te bekennen terwijl je de kleur wel had", n: "De slag wordt opnieuw gespeeld.", s: 3 },
+        { w: "Iedereen zit goed in dezelfde ronde", n: "Komt bijna nooit voor door de deler-regel. Gebeurt het toch: deler drinkt.", s: "adt" }
+      ],
+      tips: [
+        "**Blinde ronde:** in de rondes met 1 kaart houd je je kaart tegen je voorhoofd. Je ziet die van de anderen, maar niet die van jezelf.",
+        "**Punten erbij:** wil je ook een winnaar, geef dan 10 punten plus 2 per slag voor een goede voorspelling en −2 per slag verschil voor een foute.",
+        "Een Aas van troef is bijna altijd een slag. Een losse lage troef kan juist goud waard zijn als je een kleur niet hebt.",
+        "De deler heeft het het moeilijkst. Daarom schuift die rol elke ronde door."
+      ]
+    },
+    {
+      id: "pesten", name: "Pesten", rank: "Pe", suit: "♣",
+      tagline: "Leg kaarten op kleur of waarde en zet de anderen met pestkaarten aan het pakken.",
+      min: 2, max: 10, ideal: [3, 6], duration: "15–30 min", level: "Makkelijk",
+      calc(n) {
+        const two = n >= 6;
+        const total = two ? 108 : 54;
+        const per = n <= 6 ? 7 : 5;
+        return {
+          stats: [
+            [two ? 2 : 1, two ? "kaartspellen met 4 jokers" : "kaartspel met 2 jokers"],
+            [per, "kaarten per speler"],
+            [total - per * n - 1, "kaarten in de pakstapel"],
+            [total, "kaarten in totaal"]
+          ],
+          note: two ? "Met twee spellen zitten er dubbele pestkaarten in. Dat maakt het een stuk gemener." : "Met weinig spelers raakt de pakstapel zelden op."
+        };
+      },
+      goal: "Als eerste al je kaarten kwijtraken. De laatste kaart moet je aankondigen.",
+      prep: n => [
+        "Pak " + (n >= 6 ? "twee kaartspellen met in totaal 4 jokers" : "één kaartspel met 2 jokers") + " en schud goed.",
+        "Deel iedereen " + (n <= 6 ? 7 : 5) + " kaarten. De rest gaat dicht op een stapel in het midden.",
+        "Draai de bovenste kaart van de stapel om en leg hem ernaast. Dat is de aflegstapel.",
+        "Spreek af welke kaarten speciaal zijn. Hieronder staat de meest gespeelde versie."
+      ],
+      play: [
+        "Links van de deler begint. Je legt een kaart van **dezelfde kleur** (♥ ♦ ♣ ♠) of **dezelfde waarde** als de bovenste kaart.",
+        "Kun je niets leggen, dan pak je één kaart van de stapel. Past die meteen, dan mag je hem nog leggen.",
+        "Speciale kaarten hebben een effect op de volgende speler, zie het overzicht hieronder.",
+        "Heb je nog één kaart, dan roep je **‘Laatste kaart!’**. Vergeet je dat, dan krijg je strafkaarten.",
+        "Is de pakstapel op, schud dan de aflegstapel (behalve de bovenste kaart) en gebruik die opnieuw.",
+        "Wie als eerste geen kaarten meer heeft, wint. Je mag meestal niet uitkomen met een pestkaart."
+      ],
+      cards: [
+        { r: "2", t: "Pak 2", d: "De volgende pakt 2 kaarten, tenzij hij zelf een 2 of joker legt. Dan schuift het door en telt het op." },
+        { r: "7", t: "Blijft kleven", d: "Je moet direct nog een kaart leggen. Kun je dat niet, dan pak je er een." },
+        { r: "8", t: "Wacht", d: "De volgende speler slaat zijn beurt over." },
+        { r: "B", t: "Kleur wensen", d: "Mag op alles. Je zegt welke kleur de volgende moet leggen." },
+        { r: "H", t: "Nog een keer", d: "Je bent direct nog een keer aan de beurt." },
+        { r: "A", t: "Keer om", d: "De speelrichting draait om. Met twee spelers werkt dit als ‘nog een keer’." },
+        { r: "J", t: "Joker: pak 5", d: "Mag op alles. De volgende pakt 5, tenzij hij doorpest met een 2 of joker." }
+      ],
+      drinks: [
+        { w: "Per kaart die je moet pakken door een 2 of joker", n: "Pak je er 7 door een opgestapelde pestreeks, dan drink je 7 keer.", s: 1 },
+        { w: "Je vergeet ‘laatste kaart’ te roepen", n: "Plus 2 strafkaarten.", s: 3 },
+        { w: "Je komt uit (winnaar)", n: "Deel dit uit aan wie je wilt.", s: 5 },
+        { w: "Meeste kaarten over aan het eind", s: 3 },
+        { w: "De pakstapel moet opnieuw geschud worden", n: "Iedereen drinkt.", s: 1 },
+        { w: "Je legt een kaart die niet past", n: "Terug in je hand en pak er nog een bij.", s: 2 }
+      ],
+      tips: [
+        "Pestkaarten verschillen per tafel. Sommigen spelen 5 = ‘iedereen geeft een kaart door’ of 10 = ‘iedereen drinkt’. Spreek het vooraf af.",
+        "Houd een Boer achter de hand voor als je vastzit: hij past altijd.",
+        "Twee spelers? Dan werkt het ook prima, maar haal de Aas als ‘keer om’ eruit of laat hem gelden als ‘nog een keer’."
+      ]
+    },
+    {
+      id: "kingsen", name: "Kingsen", rank: "K", suit: "♥",
+      tagline: "Een ring van kaarten rond een grote beker. Elke kaart die je trekt heeft een eigen opdracht.",
+      min: 3, max: 12, ideal: [4, 8], duration: "20–40 min", level: "Makkelijk",
+      calc(n) {
+        return {
+          stats: [
+            [1, "kaartspel (zonder jokers)"],
+            ["≈ " + Math.round(52 / n), "keer trekken per speler"],
+            [4, "heren tot de beker leeg moet"],
+            [1, "grote lege beker in het midden"]
+          ],
+          note: n >= 9 ? "Met veel spelers duurt het lang voor je weer aan de beurt bent. Speel met twee ringen of laat de 10 (categorie) vaker terugkomen." : "Ga in een kring zitten zodat iedereen goed bij de ring kan."
+        };
+      },
+      goal: "Er valt niets te winnen. Je voert om de beurt opdrachten uit en probeert niet degene te zijn die de vierde Heer trekt.",
+      prep: n => [
+        "Zet een grote lege beker of pul in het midden van de tafel.",
+        "Schud één kaartspel zonder jokers en leg alle kaarten dicht in een gesloten ring rond de beker.",
+        "Spreek af wat elke kaart betekent. Hieronder staat de meest gespeelde versie.",
+        "De jongste speler (of wie het wil) begint. Daarna gaat het met de klok mee."
+      ],
+      play: [
+        "Om de beurt trek je één kaart uit de ring en draai je hem om.",
+        "Voer de opdracht uit die bij die kaart hoort.",
+        "Let op dat je **de ring niet breekt**: er mag geen opening ontstaan tussen de kaarten.",
+        "Bij elke Heer giet je een deel van je eigen drankje in de beker in het midden.",
+        "Wie de vierde Heer trekt, drinkt de beker leeg. Daarna is het spel afgelopen."
+      ],
+      cards: [
+        { r: "A", t: "Waterval", d: "Iedereen drinkt tegelijk. Je mag pas stoppen als de persoon vóór je gestopt is. De trekker mag als eerste stoppen." },
+        { r: "2", t: "Jij", d: "Wijs iemand aan. Die drinkt [[2]]." },
+        { r: "3", t: "Ik", d: "Jij drinkt zelf [[2]]." },
+        { r: "4", t: "Vloer", d: "Iedereen raakt de vloer aan. De laatste drinkt [[2]]." },
+        { r: "5", t: "Duimmeester", d: "Leg op een moment naar keuze stiekem je duim op tafel. De laatste die het doorheeft drinkt [[2]]. Geldt tot de volgende 5." },
+        { r: "6", t: "Vragenmeester", d: "Wie een vraag van jou beantwoordt, drinkt [[1]]. Geldt tot de volgende 6." },
+        { r: "7", t: "Hemel", d: "Iedereen steekt een hand omhoog. De laatste drinkt [[2]]." },
+        { r: "8", t: "Maatje", d: "Kies een maatje. Die drinkt elke keer met je mee tot de volgende 8." },
+        { r: "9", t: "Rijmen", d: "Zeg een woord. Om de beurt noem je iets dat erop rijmt. Wie niks weet of herhaalt drinkt [[2]]." },
+        { r: "10", t: "Categorie", d: "Kies een categorie, zoals biermerken. Om de beurt noem je er een. Wie vastloopt drinkt [[2]]." },
+        { r: "B", t: "Regel", d: "Verzin een regel die de rest van het spel geldt. Overtreders drinken [[1]]." },
+        { r: "V", t: "Ik heb nog nooit", d: "Iedereen steekt drie vingers op. Om de beurt zeg je iets wat je nooit gedaan hebt. Wie het wel deed, laat een vinger zakken en drinkt [[1]]." },
+        { r: "H", t: "Kingsbeker", d: "Giet wat van je drankje in de beker. Bij de vierde Heer drinkt de trekker de beker leeg." }
+      ],
+      drinks: [
+        { w: "Je breekt de ring", n: "Er valt een gat tussen de kaarten.", s: 3 },
+        { w: "Je trekt de vierde Heer", n: "Drink de beker in het midden leeg (of een deel ervan bij Rustig).", s: "adt" },
+        { w: "Je overtreedt een regel van een Boer", s: 1 },
+        { w: "Je beantwoordt een vraag van de Vragenmeester", s: 1 }
+      ],
+      tips: [
+        "Laat de kingsbeker niet te vol worden. Spreek af dat er maximaal een scheutje per Heer in mag.",
+        "Bij Rustig kun je de beker ook delen: de vierde Heer drinkt de helft en kiest iemand voor de rest.",
+        "Goede Boer-regels: alleen met je linkerhand drinken, niemand mag ‘ja’ of ‘nee’ zeggen, of iedereen spreekt elkaar aan met ‘meneer’."
+      ]
+    },
+    {
+      id: "paardenrace", name: "Paardenrace", rank: "Pa", suit: "♦",
+      tagline: "Vier azen racen naar de finish. Zet slokken in op je paard en hoop dat het als eerste binnenkomt.",
+      min: 3, max: 20, ideal: [5, 15], duration: "10–15 min", level: "Makkelijk",
+      calc(n) {
+        const track = n >= 12 ? 8 : 7;
+        return {
+          stats: [
+            [1, "kaartspel (zonder jokers)"],
+            [track, "kaarten in de baan"],
+            ["≈ " + Math.ceil(n / 4), "spelers per paard"],
+            [52 - 4 - track, "kaarten om te draaien"]
+          ],
+          note: "Kies iemand als omroeper. Die draait de kaarten om en doet het commentaar. Met meer spelers is een langere baan spannender."
+        };
+      },
+      goal: "Gok op het juiste paard. De azen zijn de paarden en de kleur bepaalt welk paard een stap zet.",
+      prep: n => [
+        "Haal de vier azen uit het spel en leg ze naast elkaar als startlijn. Dit zijn de paarden: ♥ ♦ ♣ ♠.",
+        "Schud de rest en leg er " + (n >= 12 ? 8 : 7) + " dicht in een rij haaks op de azen. Dit is de baan.",
+        "Iedereen kiest een paard (een kleur) en zet slokken in. Spreek een maximum af, bijvoorbeeld [[5]].",
+        "Schrijf de inzetten op of zeg ze hardop zodat niemand achteraf gaat sjoemelen."
+      ],
+      play: [
+        "De omroeper draait de kaarten van de stapel één voor één om.",
+        "Bij elke kaart gaat het paard van die kleur één plek vooruit langs de baan.",
+        "Zijn alle vier de paarden voorbij een baankaart, dan draai je die om. Het paard van die kleur moet één plek terug.",
+        "Het eerste paard dat voorbij de laatste baankaart komt, wint de race."
+      ],
+      drinks: [
+        { w: "Je paard wint", n: "Deel twee keer je inzet uit aan spelers met een ander paard.", s: "2× inzet" },
+        { w: "Je paard verliest", n: "Drink je eigen inzet.", s: "inzet" },
+        { w: "Je paard eindigt als laatste", n: "Drink je inzet dubbel.", s: "2× inzet" },
+        { w: "Je wisselt van paard tijdens de race", n: "Mag niet. Wie het toch probeert drinkt extra.", s: 3 }
+      ],
+      tips: [
+        "Inzetten hoeven niet even groot te zijn. Durf je meer, dan win je ook meer.",
+        "Een enthousiaste omroeper maakt het spel. Hardop commentaar geven zoals bij een echte race werkt erg goed.",
+        "Met heel veel spelers kun je twee races achter elkaar doen met een andere omroeper."
+      ]
+    },
+    {
+      id: "bussen", name: "Bussen", rank: "Bu", suit: "♠",
+      tagline: "Vier vragen, een piramide en tot slot moet één pechvogel de bus in.",
+      min: 3, max: 10, ideal: [4, 8], duration: "20–40 min", level: "Makkelijk",
+      calc(n) {
+        const need = 4 * n + 15;
+        const decks = need > 52 ? 2 : 1;
+        return {
+          stats: [
+            [decks, decks === 1 ? "kaartspel (zonder jokers)" : "kaartspellen door elkaar"],
+            [4, "kaarten per speler in fase 1"],
+            [15, "kaarten in de piramide"],
+            [need, "kaarten nodig voor fase 1 + 2"]
+          ],
+          note: decks === 2 ? "Met " + n + " spelers heb je " + need + " kaarten nodig. Dat past niet in één spel, dus schud er een tweede bij." : "Voor de bus gebruik je de kaarten die nog over zijn. Te weinig? Schud alles opnieuw."
+        };
+      },
+      goal: "Zo min mogelijk kaarten overhouden, zodat jij niet degene bent die de bus in moet.",
+      prep: n => [
+        "Pak " + (4 * n + 15 > 52 ? "twee kaartspellen" : "één kaartspel") + " zonder jokers en schud goed.",
+        "Fase 1 speel je met vier rondes. Elke ronde krijgt iedereen één open kaart erbij.",
+        "Volgorde van laag naar hoog: 2 t/m 10, Boer, Vrouw, Heer, Aas.",
+        "Houd de rest van de stapel bij de hand voor de piramide en de bus."
+      ],
+      play: [
+        "**Ronde 1, Rood of zwart?** Raad de kleur van je kaart voordat je hem krijgt. Fout = [[1]], goed = deel [[1]] uit.",
+        "**Ronde 2, Hoger of lager?** Is de volgende kaart hoger of lager dan je eerste? Fout = [[2]], goed = deel [[2]] uit.",
+        "**Ronde 3, Binnen of buiten?** Valt de volgende kaart tussen je twee kaarten in of erbuiten? Fout = [[3]], goed = deel [[3]] uit.",
+        "**Ronde 4, Welke soort?** Raad ♥ ♦ ♣ of ♠. Fout = [[4]], goed = deel [[4]] uit.",
+        "**De piramide:** leg 15 kaarten dicht in vijf rijen (5-4-3-2-1). Draai ze rij voor rij om, van onder naar boven. Heb je dezelfde waarde in je hand, leg hem erop en deel slokken uit: rij 1 is [[1]], rij 5 is [[5]].",
+        "**De bus:** wie daarna de meeste kaarten over heeft, moet de bus in. Leg 7 kaarten dicht op een rij en draai ze één voor één om terwijl je steeds hoger of lager raadt.",
+        "Raad je fout in de bus, drink [[2]] en begin opnieuw bij de eerste kaart met nieuwe kaarten. Je bent klaar als je de hele rij goed hebt."
+      ],
+      drinks: [
+        { w: "Fout geraden in fase 1", n: "Ronde 1 tot 4: oplopend van 1 tot 4.", s: "1–4" },
+        { w: "Piramide-kaart in je hand", n: "Deel uit naar rijnummer, hogere rijen zijn meer waard.", s: "1–5" },
+        { w: "Gelijk bij hoger of lager", n: "Een gelijke kaart telt als fout.", s: 2 },
+        { w: "Fout in de bus", n: "Daarna begin je weer bij de eerste kaart.", s: 2 }
+      ],
+      tips: [
+        "Sommigen laten de piramide om en om ‘uitdelen’ en ‘zelf drinken’ per rij. Dat maakt het spannender.",
+        "Is de bus te zwaar, laat dan een maatje meerijden dat de helft van de slokken overneemt.",
+        "Bij gelijkspel voor de bus: de speler met de hoogste kaart in zijn hand moet erin."
+      ]
+    },
+    {
+      id: "hogerlager", name: "Hoger Lager", rank: "HL", suit: "♥",
+      tagline: "Raad of de volgende kaart hoger of lager is. Hoe langer de reeks, hoe duurder een fout.",
+      min: 2, max: 12, ideal: [3, 8], duration: "10–20 min", level: "Heel makkelijk",
+      calc(n) {
+        return {
+          stats: [
+            [1, "kaartspel (zonder jokers)"],
+            [3, "goed op rij om door te geven"],
+            ["≈ " + Math.round(51 / n), "gokken per speler per spel"],
+            [n, "spelers in de kring"]
+          ],
+          note: "Het spel werkt met elk aantal spelers. Met veel mensen is het fijn om twee groepjes te maken."
+        };
+      },
+      goal: "Zo veel mogelijk goed raden. Wie fout zit, drinkt voor elke kaart op de stapel.",
+      prep: n => [
+        "Schud één kaartspel zonder jokers en leg het dicht neer.",
+        "Draai de bovenste kaart om en leg hem open in het midden. Dit is het begin van de stapel.",
+        "Volgorde van laag naar hoog: 2 t/m 10, Boer, Vrouw, Heer, Aas."
+      ],
+      play: [
+        "De eerste speler zegt ‘hoger’ of ‘lager’ en draait de volgende kaart om.",
+        "Goed geraden? Leg de kaart op de stapel. Na drie keer goed op rij mag je doorgeven aan de volgende.",
+        "Fout geraden? Drink voor elke kaart die op de stapel ligt. Daarna wordt de stapel weggelegd en begint het opnieuw met één kaart.",
+        "Een gelijke kaart telt als fout.",
+        "Het spel is afgelopen als de stapel op is."
+      ],
+      drinks: [
+        { w: "Fout geraden", n: "Per kaart op de stapel. Een reeks van 6 kost dus 6 keer.", s: 1 },
+        { w: "Gelijke kaart", n: "Telt als fout, en iedereen drinkt ook [[1]] mee.", s: 1 },
+        { w: "Je raadt een hele reeks van 3 goed", n: "Deel uit en geef de beurt door.", s: 2 }
+      ],
+      tips: [
+        "Bij Stevig kan dit snel oplopen. Spreek een maximum per fout af, bijvoorbeeld 10 slokken.",
+        "Lage kaart open? Dan is ‘hoger’ bijna altijd veilig. Juist de middenkaarten (7, 8) maken het spannend."
+      ]
+    },
+    {
+      id: "dealertje", name: "Dealertje", rank: "D", suit: "♣",
+      tagline: "Raad in twee pogingen welke kaart de dealer omdraait. Lukt het, dan moet de dealer drinken.",
+      min: 3, max: 10, ideal: [4, 8], duration: "15–25 min", level: "Makkelijk",
+      calc(n) {
+        return {
+          stats: [
+            [1, "kaartspel (zonder jokers)"],
+            [2, "gokken per beurt"],
+            [3, "fouten op rij en de dealer wisselt"],
+            [13, "rijtjes op tafel (2 t/m Aas)"]
+          ],
+          note: "Omgedraaide kaarten leg je open per waarde op tafel. Zo kan iedereen tellen wat er nog in de stapel zit."
+        };
+      },
+      goal: "Als speler wil je de kaart goed raden zodat de dealer drinkt. Als dealer hoop je dat iedereen ernaast zit.",
+      prep: n => [
+        "Kies een dealer. Die houdt het geschudde kaartspel dicht in de hand.",
+        "Maak ruimte op tafel voor dertien rijtjes: 2 t/m 10, Boer, Vrouw, Heer, Aas.",
+        "De speler links van de dealer begint met raden."
+      ],
+      play: [
+        "De speler noemt een waarde, bijvoorbeeld ‘vrouw’. De dealer kijkt naar de bovenste kaart.",
+        "Goed in één keer? Dan drinkt de dealer [[4]].",
+        "Fout? De dealer zegt alleen ‘hoger’ of ‘lager’. De speler mag nog één keer raden. Goed = dealer drinkt [[2]].",
+        "Ook de tweede gok fout? Dan drinkt de speler [[2]].",
+        "De kaart gaat open in zijn rijtje op tafel en de volgende speler is aan de beurt.",
+        "Raden drie spelers achter elkaar fout, dan is de dealer er vanaf. De speler links van hem wordt de nieuwe dealer."
+      ],
+      drinks: [
+        { w: "Speler raadt het in één keer", n: "De dealer drinkt.", s: 4 },
+        { w: "Speler raadt het in twee keer", n: "De dealer drinkt.", s: 2 },
+        { w: "Speler zit er twee keer naast", n: "De speler drinkt.", s: 2 },
+        { w: "Dealer zegt per ongeluk het verkeerde", n: "Hoger in plaats van lager, of andersom.", s: 3 }
+      ],
+      tips: [
+        "Kijk naar de rijtjes op tafel. Liggen er al drie vrouwen, dan is de kans op nog een vrouw klein.",
+        "Echt stevig: bij een fout drinkt de speler het verschil tussen zijn gok en de echte kaart (Boer = 11, Vrouw = 12, Heer = 13, Aas = 14)."
+      ]
+    }
+  ];
+
+  /* ---------- Helpers ---------- */
+  function fitOf(g, n) {
+    if (n < g.min || n > g.max) return { cls: "niet", label: "Niet met " + n };
+    if (n >= g.ideal[0] && n <= g.ideal[1]) return { cls: "ideal", label: "Ideaal" };
+    return { cls: "kan", label: "Kan prima" };
+  }
+  function suitCls(s) { return RED.includes(s) ? "red" : ""; }
+  function idx(g, pos) {
+    return '<span class="idx ' + pos + " " + suitCls(g.suit) + '" aria-hidden="true"><span class="r">' + esc(g.rank) + '</span><span class="s">' + g.suit + "</span></span>";
+  }
+  const app = document.getElementById("app");
+  function reduceMotion() { return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  const FAN_SUITS = ["♠", "♥", "♣", "♦"];
+  function fanHtml(n) {
+    const spread = Math.min(16, 120 / Math.max(n - 1, 1));
+    let s = "";
+    for (let k = 0; k < n; k++) {
+      const a = (k - (n - 1) / 2) * spread;
+      const suit = FAN_SUITS[k % 4];
+      s += '<span class="seat ' + suitCls(suit) + '" style="--a:' + a.toFixed(1) + "deg;--k:" + k + ";z-index:" + k + '">' + suit + "</span>";
+    }
+    return '<div class="table-fan" aria-hidden="true"><div class="fan">' + s + '</div><span class="fan-cap"><b>' + n + "</b> " + (n === 1 ? "speler" : "spelers") + " aan tafel</span></div>";
+  }
+
+  /* ---------- Overzicht ---------- */
+  function renderHome() {
+    const n = state.n;
+    const list = GAMES.map(g => ({ g, f: fitOf(g, n) }));
+    const fits = list.filter(x => x.f.cls !== "niet").length;
+    const shown = state.onlyFit ? list.filter(x => x.f.cls !== "niet") : list;
+    app.innerHTML =
+      '<div class="wrap">' +
+        '<section class="intro">' +
+          '<div class="intro-text">' +
+            '<h1>Kaartspellen voor aan tafel, <em>met slokken</em>.</h1>' +
+            "<p>Stel bovenin in met hoeveel je bent en hoe stevig je het wilt. Elk spel past zich daarop aan: hoeveel kaartspellen je nodig hebt, hoeveel kaarten iedereen krijgt en hoeveel slokken er bij elke regel horen.</p>" +
+          "</div>" +
+          fanHtml(n) +
+        "</section>" +
+        '<div class="filterrow">' +
+          '<span class="count"><b>' + fits + " van de " + GAMES.length + "</b> spellen zijn te spelen met " + n + " spelers</span>" +
+          '<label class="toggle" for="only-fit"><input type="checkbox" id="only-fit"' + (state.onlyFit ? " checked" : "") + "> Alleen wat past</label>" +
+        "</div>" +
+        '<div class="hand">' +
+          shown.map(({ g, f }, i) =>
+            '<button class="pcard' + (f.cls === "niet" ? " off" : "") + '" data-id="' + g.id + '" style="--i:' + i + ";--dx:" + ((i % 4) - 1.5) * -60 + "px;--dr:" + (i % 2 ? 12 : -14) + 'deg">' +
+              idx(g, "tl") + idx(g, "br") +
+              '<span class="fit ' + f.cls + '">' + f.label + "</span>" +
+              "<h2>" + esc(g.name) + "</h2>" +
+              "<p>" + esc(g.tagline) + "</p>" +
+              '<span class="meta"><span>' + g.min + "–" + g.max + " spelers</span><span>" + g.duration + "</span></span>" +
+            "</button>"
+          ).join("") +
+        "</div>" +
+      "</div>";
+    app.querySelectorAll(".pcard").forEach(b => {
+      b.addEventListener("click", () => { location.hash = b.dataset.id; });
+      b.addEventListener("pointermove", e => {
+        if (e.pointerType !== "mouse" || reduceMotion()) return;
+        const r = b.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        b.style.setProperty("--ry", ((x - .5) * 14).toFixed(2) + "deg");
+        b.style.setProperty("--rx", ((.5 - y) * 12).toFixed(2) + "deg");
+        b.style.setProperty("--gx", (x * 100).toFixed(1) + "%");
+        b.style.setProperty("--gy", (y * 100).toFixed(1) + "%");
+      });
+      b.addEventListener("pointerleave", () => { b.style.setProperty("--rx", "0deg"); b.style.setProperty("--ry", "0deg"); });
+    });
+    document.getElementById("only-fit").addEventListener("change", e => { state.onlyFit = e.target.checked; save(); renderHome(); });
+  }
+
+  /* ---------- Spelpagina ---------- */
+  function renderGame(g, keepScroll) {
+    const n = state.n;
+    const f = fitOf(g, n);
+    const c = g.calc(n);
+    let warn = "";
+    if (n < g.min) warn = "Met " + n + " spelers is dit spel eigenlijk te klein. Je hebt er minstens " + g.min + " nodig.";
+    else if (n > g.max) warn = "Met " + n + " spelers wordt het rommelig. Meer dan " + g.max + " raden we niet aan; splits liever in twee groepen.";
+
+    const statsHtml = c.stats.map(s =>
+      '<div class="stat' + (s[2] ? " wide" : "") + '"><b>' + esc(s[0]) + "</b><small>" + esc(s[1]) + "</small></div>"
+    ).join("");
+    const rolesHtml = c.roles
+      ? "<h3>Rollen met " + n + " spelers</h3><ol class=\"roles\">" + c.roles.map((r, i) => '<li style="--i:' + i + '"><span>' + esc(r[0]) + "</span><span>" + esc(r[1]) + "</span></li>").join("") + "</ol>"
+      : "";
+
+    const cardsHtml = g.cards
+      ? '<section class="sec" style="--i:3"><h2><span class="pip ' + suitCls(g.suit) + '">' + g.suit + "</span>Wat doet elke kaart?</h2>" +
+          '<div class="draw"><button class="btn" id="draw-btn">Trek een kaart</button>' +
+          '<div class="drawn" id="drawn" aria-hidden="true">?</div>' +
+          '<div class="drawtxt" id="drawtxt" aria-live="polite">Probeer het uit: trek een willekeurige kaart en zie welke regel erbij hoort.</div></div>' +
+          '<div class="cardrules">' + g.cards.map(k =>
+            '<div class="crule" data-r="' + k.r + '"><div class="crank">' + esc(k.r) + "</div><div><b>" + esc(k.t) + "</b><span>" + rich(k.d) + "</span></div></div>"
+          ).join("") + "</div></section>"
+      : "";
+
+    app.innerHTML =
+      '<div class="wrap">' +
+        '<button class="back" id="back-btn">← Alle spellen</button>' +
+        '<section class="ghero">' +
+          '<div class="bigcard" aria-hidden="true">' + idx(g, "tl") + '<span class="' + suitCls(g.suit) + '">' + g.suit + "</span>" + idx(g, "br") + "</div>" +
+          "<div><h1>" + esc(g.name) + '</h1><p class="tag">' + esc(g.tagline) + "</p>" +
+            '<div class="chips">' +
+              '<span class="chip fit ' + f.cls + '" style="border-width:1.5px">' + f.label + "</span>" +
+              '<span class="chip">' + g.min + "–" + g.max + " <span>spelers</span></span>" +
+              '<span class="chip">' + g.ideal[0] + "–" + g.ideal[1] + " <span>ideaal</span></span>" +
+              '<span class="chip">' + g.duration + "</span>" +
+              '<span class="chip">' + g.level + "</span>" +
+            "</div></div>" +
+        "</section>" +
+        '<div class="cols">' +
+          "<div>" +
+            '<section class="sec" style="--i:0"><h2>Doel van het spel</h2><p>' + rich(g.goal) + "</p></section>" +
+            '<section class="sec" style="--i:1"><h2>Voorbereiding</h2><ol class="steps">' + g.prep(n).map(s => "<li><span>" + rich(s) + "</span></li>").join("") + "</ol></section>" +
+            '<section class="sec" style="--i:2"><h2>Zo speel je</h2><ol class="steps">' + g.play.map(s => "<li><span>" + rich(s) + "</span></li>").join("") + "</ol></section>" +
+            cardsHtml +
+            '<section class="sec" style="--i:4"><h2>Slokkenregels</h2><div class="drinks">' + g.drinks.map((d, i) =>
+              '<div class="drink" style="--i:' + i + '"><div><div class="w">' + rich(d.w) + "</div>" + (d.n ? '<div class="n">' + rich(d.n) + "</div>" : "") + "</div>" + coaster(d.s) + "</div>"
+            ).join("") + "</div></section>" +
+            '<section class="sec" style="--i:5"><h2>Huisregels &amp; tips</h2><ul class="bul">' + g.tips.map(t => "<li>" + rich(t) + "</li>").join("") + "</ul></section>" +
+          "</div>" +
+          '<aside class="aside"><div class="table-panel" style="--i:1">' +
+            "<h3>Met " + n + " spelers heb je nodig</h3>" +
+            (warn ? '<div class="warnbox">' + esc(warn) + "</div>" : "") +
+            '<div class="stats">' + statsHtml + "</div>" +
+            rolesHtml +
+            (c.note ? '<p class="panel-note">' + esc(c.note) + "</p>" : "") +
+          "</div></aside>" +
+        "</div>" +
+      "</div>";
+
+    document.getElementById("back-btn").addEventListener("click", () => { location.hash = ""; });
+    const db = document.getElementById("draw-btn");
+    if (db) db.addEventListener("click", () => drawCard(g));
+    if (!keepScroll) window.scrollTo(0, 0);
+  }
+
+  function drawCard(g) {
+    const suits = ["♥", "♦", "♣", "♠"];
+    let ranks = g.cards.map(k => k.r).filter(r => r !== "J");
+    let r, s;
+    const hasJoker = g.cards.some(k => k.r === "J");
+    // Pesten: draw from a full deck so normal cards show up too
+    if (g.id === "pesten") {
+      const full = ["2","3","4","5","6","7","8","9","10","B","V","H","A"];
+      const pool = [];
+      full.forEach(x => suits.forEach(y => pool.push([x, y])));
+      if (hasJoker) { pool.push(["J", ""]); pool.push(["J", ""]); }
+      [r, s] = pool[Math.floor(Math.random() * pool.length)];
+    } else {
+      r = ranks[Math.floor(Math.random() * ranks.length)];
+      s = suits[Math.floor(Math.random() * 4)];
+    }
+    const el = document.getElementById("drawn");
+    el.classList.remove("flip"); void el.offsetWidth; el.classList.add("flip");
+    el.className = "drawn flip " + (RED.includes(s) ? "red" : "");
+    el.innerHTML = r === "J" ? "🃏" : esc(r) + "<br>" + s;
+    const rule = g.cards.find(k => k.r === r);
+    const txt = document.getElementById("drawtxt");
+    document.querySelectorAll(".crule").forEach(x => x.classList.toggle("hit", x.dataset.r === r));
+    if (rule) {
+      txt.innerHTML = "<b>" + (r === "J" ? "Joker" : esc(r) + " " + s) + ": " + esc(rule.t) + "</b>" + rich(rule.d);
+    } else {
+      txt.innerHTML = "<b>" + esc(r) + " " + s + ": gewone kaart</b>Geen speciale actie. Leg hem op kleur of waarde.";
+    }
+  }
+
+  /* ---------- Bediening ---------- */
+  const out = document.getElementById("pl-out");
+  const minB = document.getElementById("pl-min");
+  const plusB = document.getElementById("pl-plus");
+  const levelEl = document.getElementById("level");
+  levelEl.innerHTML = LEVELS.map(l => '<button data-l="' + l.id + '" id="lv-' + l.id + '">' + l.label + "</button>").join("");
+
+  function syncControls() {
+    out.textContent = state.n;
+    minB.disabled = state.n <= 2;
+    plusB.disabled = state.n >= 20;
+    levelEl.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === state.level)));
+  }
+  function route(keepScroll, kind) {
+    syncControls();
+    app.className = kind === "n" ? "bump-n" : kind === "lv" ? "bump-lv" : "enter";
+    const id = location.hash.replace("#", "");
+    const g = GAMES.find(x => x.id === id);
+    if (g) { document.title = g.name + " · Kaarten & Slokken"; renderGame(g, keepScroll); }
+    else { document.title = "Kaarten & Slokken"; renderHome(); if (!keepScroll) window.scrollTo(0, 0); }
+  }
+  minB.addEventListener("click", () => { if (state.n > 2) { state.n--; save(); route(true, "n"); } });
+  plusB.addEventListener("click", () => { if (state.n < 20) { state.n++; save(); route(true, "n"); } });
+  levelEl.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b || b.dataset.l === state.level) return;
+    state.level = b.dataset.l; save(); route(true, "lv");
+  });
+  document.getElementById("home-btn").addEventListener("click", () => { location.hash = ""; });
+  window.addEventListener("hashchange", () => route(false));
+  route(false);
+})();
+</script>
+</body>
+</html>

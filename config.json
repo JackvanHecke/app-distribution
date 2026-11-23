@@ -8,6 +8,9 @@
     "subtitle": "Privé sideload-bron van JAVAC",
     "iconURL": "https://raw.githubusercontent.com/JackvanHecke/app-distribution/main/2e4312f7cb9b/icons/javac-source.png"
   },
+  "localBundleIdentifiers": [
+    "com.javac.kaartenslokken"
+  ],
   "apps": [
     {
       "repo": "cerebrum",
@@ -160,14 +163,6 @@
       "developerName": "JAVAC",
       "icon": "vestigia.png",
       "iconSource": "../laptop/Vestigia/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
-    },
-    {
-      "repo": "kaarten-en-slokken",
-      "name": "Kaarten & Slokken",
-      "bundleIdentifier": "com.javac.kaartenslokken",
-      "developerName": "JAVAC",
-      "icon": "kaartenslokken.png",
-      "iconSource": "../mobile/kaarten-en-slokken/App/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     },
     {
       "repo": "roastfuel",

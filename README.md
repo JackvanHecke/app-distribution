@@ -82,6 +82,17 @@ git add -A && git commit -m "update source" && git push
 
 ---
 
+## Apps zonder eigen repo
+
+Sommige apps worden hier zelf gebouwd in plaats van uit een private repo opgehaald.
+Hun bron staat in `apps-src/<app>/`, een eigen workflow bouwt de IPA op een macOS-runner,
+zet hem op de `latest`-release en werkt `apps.json` bij. Hun bundle-ID staat in
+`localBundleIdentifiers` in `config.json`, zodat `collect.sh` ze laat staan.
+
+- **Kaarten & Slokken**: `apps-src/kaarten-en-slokken`, workflow *Build Kaarten & Slokken*.
+
+---
+
 ## Belangrijk om te weten
 
 - **LiveContainer** omzeilt de 3-app-limiet en de 7-daagse reinstall per app — je onderhoudt

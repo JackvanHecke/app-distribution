@@ -1,0 +1,83 @@
+name: Build Kaarten & Slokken
+
+# Deze app heeft geen eigen repo: de bron staat in apps-src/kaarten-en-slokken.
+# Bouwt de IPA op een macOS-runner (gratis, publieke repo), zet hem op de
+# 'latest'-release en werkt apps.json bij.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps-src/kaarten-en-slokken/**"
+      - ".github/workflows/build-kaarten-en-slokken.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-kaarten-en-slokken
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-15
+    env:
+      APP_DIR: apps-src/kaarten-en-slokken
+      BID: com.javac.kaartenslokken
+      ASSET: kaarten-en-slokken.ipa
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Buildnummer
+        run: echo "BUILD_NUMBER=$(date -u +%y%m%d%H%M)" >> "$GITHUB_ENV"
+
+      - name: xcodegen installeren
+        run: brew install xcodegen
+
+      - name: IPA bouwen
+        run: bash "$APP_DIR/build-ipa.sh"
+
+      - name: Uploaden naar de latest-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view latest >/dev/null 2>&1 \
+            || gh release create latest -t "Latest IPAs" -n "Automatisch bijgewerkt door collect.sh"
+          gh release upload latest "$APP_DIR/build/$ASSET" --clobber
+
+      - name: apps.json bijwerken
+        run: |
+          set -euo pipefail
+          TOKEN=$(jq -r .pathToken config.json)
+          OWNER=$(jq -r .owner config.json)
+          DIST=$(jq -r .distRepo config.json)
+          OUT="$TOKEN/apps.json"
+          IPA="$APP_DIR/build/$ASSET"
+          unzip -o -q "$IPA" -d /tmp/ks
+          PLIST=$(ls /tmp/ks/Payload/*.app/Info.plist | head -1)
+          VER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$PLIST").$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$PLIST")"
+          SIZE=$(stat -f%z "$IPA")
+          ENTRY=$(jq -n \
+            --arg ver "$VER" --arg date "$(date -u +%F)" --argjson size "$SIZE" \
+            --arg url "https://github.com/$OWNER/$DIST/releases/download/latest/$ASSET" \
+            --arg icon "https://raw.githubusercontent.com/$OWNER/$DIST/main/$TOKEN/icons/kaartenslokken.png" \
+            --arg bid "$BID" \
+            '{name:"Kaarten & Slokken", bundleIdentifier:$bid, developerName:"JAVAC",
+              version:$ver, versionDate:$date, downloadURL:$url, iconURL:$icon, size:$size,
+              localizedDescription:"Uitleg van kaart-drankspellen zoals Presidenten, Boerenbridge, Pesten, Kingsen en Bussen. Regels, kaarten en slokken passen zich aan het aantal spelers aan."}')
+          jq --argjson e "$ENTRY" --arg bid "$BID" \
+            '.apps = ([.apps[] | select(.bundleIdentifier != $bid)] + [$e])' "$OUT" > /tmp/apps.json
+          mv /tmp/apps.json "$OUT"
+          echo "Versie $VER, $SIZE bytes"
+
+      - name: Committen
+        run: |
+          git config user.name "JackvanHecke"
+          git config user.email "JackvanHecke@users.noreply.github.com"
+          git add "$(jq -r .pathToken config.json)/apps.json"
+          git commit -m "chore: Kaarten & Slokken build $BUILD_NUMBER" || { echo "geen wijziging"; exit 0; }
+          for i in 1 2 3; do
+            git pull --rebase -q origin main && git push && exit 0
+            sleep 5
+          done
+          exit 1
